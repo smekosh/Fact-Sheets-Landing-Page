@@ -65,7 +65,7 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			list-style: none;
 			margin: 0;
 			padding: 0;
-			width: 33.333333%;
+			width: 100%;
 		}
 		
 		.services li a {
@@ -105,6 +105,21 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			padding-top: 3em;
 		}
 		
+		
+		
+		@media (min-width: 500px) {
+			
+			.services li { width: 50%; }
+			
+		}
+		
+		
+		
+		@media (min-width: 750px) {
+			
+			.services li { width: 33.333333%; }
+			
+		}
 		
 		
 	</style>
