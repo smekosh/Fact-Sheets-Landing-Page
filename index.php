@@ -2,6 +2,8 @@
 
 $csv = 'VOAFactSheets-Sheet1.csv';
 
+$embed = $_GET['embed'];
+
 $faq = array();
 $row = 1;
 
@@ -17,7 +19,10 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 	fclose($handle);
 }
 
+ksort($faq);
 
+
+if ( !$embed ) {
 
 ?><!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -25,22 +30,30 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+<?php } ?>
 	
 	<style type="text/css">
+
+<?php if ( !$embed ) { ?>	
 		
-		body {
+		body { margin: 0; padding: 0; }
+		
+<?php } ?>
+		
+		.voafactsheet-wrapper {
 			color: #333;
 			font-family: sans-serif;
 			margin: 0; 
 			padding: 0;
 		}
 		
-		a {
+		a.voafactsheet-a {
 			color: #333;
 			text-decoration: none;
 		}
 		
-		.division > header {
+		.voafactsheet-division > header.voafactsheet-header {
 			font-family: "SkolarSans-BdCond_Cyr-Ltn",Arial,"Arial Unicode MS",Helvetica,sans-serif;
 			font-size: 27px;
 			border-bottom: 1px solid #ccc;
@@ -52,7 +65,7 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			text-align: left;
 		}
 		
-		ul.services {
+		ul.voafactsheet-services {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
@@ -61,14 +74,14 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			width: 100%;
 		}
 		
-		.services li {
+		.voafactsheet-services li.voafactsheet-li {
 			list-style: none;
 			margin: 0;
 			padding: 0;
 			width: 100%;
 		}
 		
-		.services li a {
+		.voafactsheet-services li.voafactsheet-li a.voafactsheet-a {
 			background-color: #fcfcfc;
 			border-left: 4px solid #1330bf;
 			box-shadow: 0 1px 1px 0 rgba(0,0,0,.1),0 1px 5px 0 rgba(0,0,0,.1);
@@ -77,18 +90,18 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			padding: 1em;
 		}
 		
-		.services li a:hover { background-color: #1330bf; }
+		.voafactsheet-services li.voafactsheet-li a.voafactsheet-a:hover { background-color: #1330bf; }
 		
-		.service-name {
+		.voafactsheet-service-name {
 			color: #666;
 			font-family: serif;
 			font-size: 1.5em;
 			font-weight: normal;
 		}
 		
-		.services li a:hover .service-name { color: #fff; }
+		.voafactsheet-services li.voafactsheet-li a.voafactsheet-a:hover .voafactsheet-service-name { color: #fff; }
 		
-		.established {
+		.voafactsheet-established {
 			color: #999;
 			display: block;
 			font-size: .8em;
@@ -96,9 +109,9 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 			text-transform: uppercase;
 		}
 		
-		.services li a:hover .established { color: #ddd; }
+		.voafactsheet-services li.voafactsheet-li a.voafactsheet-a:hover .voafactsheet-established { color: #ddd; }
 		
-		footer {
+		footer.voafactsheet-footer {
 			color: #666;
 			font-family: sans-serif;
 			font-size: .8em;
@@ -109,7 +122,7 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 		
 		@media (min-width: 500px) {
 			
-			.services li { width: 50%; }
+			.voafactsheet-services li.voafactsheet-li { width: 50%; }
 			
 		}
 		
@@ -117,37 +130,49 @@ if (($handle = fopen( $csv, "r")) !== FALSE) {
 		
 		@media (min-width: 750px) {
 			
-			.services li { width: 33.333333%; }
+			.voafactsheet-services li.voafactsheet-li { width: 33.333333%; }
 			
 		}
 		
 		
 	</style>
+<?php if ( !$embed ) { ?>	
 </head>
 
 <body>
 	
-	<?php foreach ( $faq as $division => $services ) { ?>
-	<section class="division">
-		<header><?php echo $division; ?></header>
-		<ul class="services">
+<?php } ?>
+	
+	<div class="voafactsheet-wrapper">
 		
-			<?php foreach ( $services as $service => $facts ) { ?>
-			<li><a href="<?php echo $facts['url']; ?>">
-				<span class="service-name"><?php echo $service; ?></span>
-				<?php if ( trim($facts['est']) != '' ) { ?>
-				<span class="established">Established <?php echo $facts['est']; ?></span>
+		<h1 class="voafactsheet-h1">VOA Language Service Fact Sheets</h1>
+		
+		<?php foreach ( $faq as $division => $services ) { ?>
+		<section class="voafactsheet-division">
+			<header class="voafactsheet-header"><?php echo $division; ?></header>
+			<ul class="voafactsheet-services">
+			
+				<?php ksort($services); ?>
+				<?php foreach ( $services as $service => $facts ) { ?>
+				<li class="voafactsheet-li"><a class="voafactsheet-a" href="<?php echo $facts['url']; ?>">
+					<span class="voafactsheet-service-name"><?php echo $service; ?></span>
+					<?php if ( trim($facts['est']) != '' ) { ?>
+					<span class="voafactsheet-established">Established <?php echo $facts['est']; ?></span>
+					<?php } ?>
+				</a></li>
 				<?php } ?>
-			</a></li>
-			<?php } ?>
+			
+			</ul>
+		</section>
+		<?php } ?>
 		
-		</ul>
-	</section>
-	<?php } ?>
-	
-	<footer><strong>*</strong> Initial year service was established. Re-established in later years.</footer>
-	
-	<pre><?php //xprint_r($faq); ?></pre>
-	
+		<footer class="voafactsheet-footer"><strong>*</strong> Initial year service was established. Re-established in later years.</footer>
+		
+	</div>
+
+<?php if ( !$embed ) { ?>
+
 </body>
 </html>
+
+<?php } ?>
