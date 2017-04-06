@@ -116,6 +116,7 @@ if ( !$embed ) {
 			font-family: sans-serif;
 			font-size: .8em;
 			padding-top: 3em;
+			padding-bottom: 2em;
 		}
 		
 		
