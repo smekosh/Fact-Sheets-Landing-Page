@@ -1,6 +1,6 @@
 <?php
 
-$csv = 'VOAFactSheets-Sheet1.csv';
+$csv = 'https://docs.google.com/spreadsheets/d/1RdTM5JXiaar2yesItAfWsa3hga5m5q9ykXdkJDaDpTI/pub?gid=0&single=true&output=csv';
 
 $embed = $_GET['embed'];
 
